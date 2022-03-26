@@ -85,49 +85,99 @@ class _HomePageState extends State<HomePage> {
               height: 30,
             ),
             Container(
-              width: MediaQuery.of(context).size.width,
-              height: 220,
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(colors: [
-                    color.AppColors.gradientFirst.withOpacity(.8),
-                    color.AppColors.gradientSecond.withOpacity(.9),
-                  ], begin: Alignment.bottomLeft, end: Alignment.centerRight),
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(80),
-                    bottomRight: Radius.circular(10),
-                    bottomLeft: Radius.circular(10),
+                width: MediaQuery.of(context).size.width,
+                height: 220,
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(colors: [
+                      color.AppColors.gradientFirst.withOpacity(.8),
+                      color.AppColors.gradientSecond.withOpacity(.9),
+                    ], begin: Alignment.bottomLeft, end: Alignment.centerRight),
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(80),
+                      bottomRight: Radius.circular(10),
+                      bottomLeft: Radius.circular(10),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                          offset: const Offset(10, 10),
+                          blurRadius: 10,
+                          color: color.AppColors.gradientSecond.withOpacity(.3))
+                    ]),
+                child: Container(
+                  padding: const EdgeInsets.only(top: 25, left: 20, right: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Next Workout",
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: color.AppColors.homePageContainerTextSmall),
+                      ),
+                      const SizedBox(
+                        height: 4,
+                      ),
+                      Text(
+                        "Legs Toning",
+                        style: TextStyle(
+                            fontSize: 25,
+                            color: color.AppColors.homePageContainerTextSmall),
+                      ),
+                      const SizedBox(
+                        height: 4,
+                      ),
+                      Text(
+                        "and Glutes workout",
+                        style: TextStyle(
+                            fontSize: 25,
+                            color: color.AppColors.homePageContainerTextSmall),
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.timer,
+                                size: 20,
+                                color:
+                                    color.AppColors.homePageContainerTextSmall,
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                "60 min",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    color: color
+                                        .AppColors.homePageContainerTextSmall),
+                              )
+                            ],
+                          ),
+                          Expanded(child: Container()),
+                          Container(
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                    offset: const Offset(4, 8),
+                                    blurRadius: 10,
+                                    color: color.AppColors.gradientFirst)
+                              ],
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            child: const Icon(
+                              Icons.play_circle_fill,
+                              size: 60,
+                              color: Colors.white,
+                            ),
+                          )
+                        ],
+                      )
+                    ],
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                        offset: const Offset(10, 10),
-                        blurRadius: 10,
-                        color: color.AppColors.gradientSecond.withOpacity(.3))
-                  ]),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "next workout",
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: color.AppColors.homePageContainerTextSmall),
-                  ),
-                  Text(
-                    "next workout",
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: color.AppColors.homePageContainerTextSmall),
-                  ),
-                  Text(
-                    "next workout",
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: color.AppColors.homePageContainerTextSmall),
-                  ),
-                ],
-              ),
-            )
+                ))
           ],
         ),
       ),
