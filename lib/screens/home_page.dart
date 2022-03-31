@@ -177,7 +177,82 @@ class _HomePageState extends State<HomePage> {
                       )
                     ],
                   ),
-                ))
+                )),
+            const SizedBox(
+              height: 20,
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: 180,
+              child: Stack(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 140,
+                    margin: const EdgeInsets.only(top: 30),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                              offset: const Offset(8, 10),
+                              blurRadius: 40,
+                              color: color.AppColors.gradientSecond
+                                  .withOpacity(.3)),
+                          BoxShadow(
+                              offset: const Offset(-1, -5),
+                              blurRadius: 40,
+                              color: color.AppColors.gradientSecond
+                                  .withOpacity(.3))
+                        ],
+                        image: const DecorationImage(
+                          image: AssetImage("assets/card.jpg"),
+                          fit: BoxFit.fill,
+                        )),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 200,
+                    margin: const EdgeInsets.only(
+                      right: 250,
+                    ),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        image: const DecorationImage(
+                          image: AssetImage("assets/figure.png"),
+                        )),
+                  ),
+                  Container(
+                    width: double.maxFinite,
+                    height: 100,
+                    margin: const EdgeInsets.only(left: 150, top: 60),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "You are doing great",
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: color.AppColors.homePageDetail),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        RichText(
+                            text: TextSpan(
+                                text: "keep it up\n",
+                                style: TextStyle(
+                                    color: color.AppColors.homePagePlanColor,
+                                    fontSize: 18),
+                                children: [
+                              TextSpan(text: "stick to your plan")
+                            ]))
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
           ],
         ),
       ),
