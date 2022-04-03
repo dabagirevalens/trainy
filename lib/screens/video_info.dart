@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:training/screens/home_page.dart';
 
 import 'package:training/utils/colors.dart' as color;
+import 'package:video_player/video_player.dart';
 
 class VideoInfo extends StatefulWidget {
   const VideoInfo({Key? key}) : super(key: key);
@@ -16,6 +17,8 @@ class VideoInfo extends StatefulWidget {
 
 class _VideoInfoState extends State<VideoInfo> {
   List videos = [];
+  bool _playArea = false;
+  late VideoPlayerController _controller;
 
   _initData() async {
     await DefaultAssetBundle.of(context)
@@ -37,133 +40,173 @@ class _VideoInfoState extends State<VideoInfo> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: const FractionalOffset(.0, .4),
-            end: Alignment.topRight,
-            colors: [
-              color.AppColors.gradientFirst.withOpacity(.9),
-              color.AppColors.gradientSecond,
-            ],
-          ),
-        ),
-        child: Column(children: [
-          Container(
-            padding: const EdgeInsets.only(top: 40, left: 30, right: 30),
-            width: MediaQuery.of(context).size.width,
-            height: 250,
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Row(
-                children: [
-                  InkWell(
-                    onTap: () => Get.back(),
-                    child: Icon(
-                      Icons.arrow_back_ios,
-                      size: 20,
-                      color: color.AppColors.secondPageTopIconColor,
-                    ),
-                  ),
-                  Expanded(child: Container()),
-                  Icon(
-                    Icons.info_outline,
-                    size: 20,
-                    color: color.AppColors.secondPageTopIconColor,
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Text(
-                "Legs Toning",
-                style: TextStyle(
-                    fontSize: 25, color: color.AppColors.secondPageTitleColor),
-              ),
-              const SizedBox(
-                height: 4,
-              ),
-              Text(
-                "and Glutes workout",
-                style: TextStyle(
-                    fontSize: 25, color: color.AppColors.secondPageTitleColor),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              Row(
-                children: [
-                  Container(
-                    width: 100,
-                    height: 30,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        gradient: LinearGradient(
-                            colors: [
-                              color.AppColors
-                                  .secondPageContainerGradient1stColor,
-                              color
-                                  .AppColors.secondPageContainerGradient2ndColor
-                            ],
-                            begin: Alignment.bottomLeft,
-                            end: Alignment.topRight)),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.timer_outlined,
-                            size: 20,
-                            color: color.AppColors.secondPageIconColor,
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                            "68 min",
-                            style: TextStyle(
-                                color: color.AppColors.secondPageTitleColor),
-                          )
-                        ]),
-                  ),
-                  const SizedBox(
-                    width: 30,
-                  ),
-                  Container(
-                    width: 250,
-                    height: 30,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        gradient: LinearGradient(
-                            colors: [
-                              color.AppColors
-                                  .secondPageContainerGradient1stColor,
-                              color
-                                  .AppColors.secondPageContainerGradient2ndColor
-                            ],
-                            begin: Alignment.bottomLeft,
-                            end: Alignment.topRight)),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.handyman_outlined,
-                            size: 20,
-                            color: color.AppColors.secondPageIconColor,
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                            "Resistent band, kettebell",
-                            style: TextStyle(
-                                color: color.AppColors.secondPageTitleColor),
-                          )
-                        ]),
-                  )
-                ],
+        decoration: _playArea == false
+            ? BoxDecoration(
+                gradient: LinearGradient(
+                  begin: const FractionalOffset(.0, .4),
+                  end: Alignment.topRight,
+                  colors: [
+                    color.AppColors.gradientFirst.withOpacity(.9),
+                    color.AppColors.gradientSecond,
+                  ],
+                ),
               )
-            ]),
-          ),
+            : BoxDecoration(color: color.AppColors.gradientSecond),
+        child: Column(children: [
+          _playArea == false
+              ? Container(
+                  padding: const EdgeInsets.only(top: 40, left: 30, right: 30),
+                  width: MediaQuery.of(context).size.width,
+                  height: 250,
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            InkWell(
+                              onTap: () => Get.back(),
+                              child: Icon(
+                                Icons.arrow_back_ios,
+                                size: 20,
+                                color: color.AppColors.secondPageIconColor,
+                              ),
+                            ),
+                            Expanded(child: Container()),
+                            Icon(
+                              Icons.info_outline,
+                              size: 20,
+                              color: color.AppColors.secondPageIconColor,
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          "Legs Toning",
+                          style: TextStyle(
+                              fontSize: 25,
+                              color: color.AppColors.secondPageTitleColor),
+                        ),
+                        const SizedBox(
+                          height: 4,
+                        ),
+                        Text(
+                          "and Glutes workout",
+                          style: TextStyle(
+                              fontSize: 25,
+                              color: color.AppColors.secondPageTitleColor),
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              width: 100,
+                              height: 30,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  gradient: LinearGradient(
+                                      colors: [
+                                        color.AppColors
+                                            .secondPageContainerGradient1stColor,
+                                        color.AppColors
+                                            .secondPageContainerGradient2ndColor
+                                      ],
+                                      begin: Alignment.bottomLeft,
+                                      end: Alignment.topRight)),
+                              child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.timer_outlined,
+                                      size: 20,
+                                      color:
+                                          color.AppColors.secondPageIconColor,
+                                    ),
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      "68 min",
+                                      style: TextStyle(
+                                          color: color
+                                              .AppColors.secondPageTitleColor),
+                                    )
+                                  ]),
+                            ),
+                            const SizedBox(
+                              width: 30,
+                            ),
+                            Container(
+                              width: 250,
+                              height: 30,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  gradient: LinearGradient(
+                                      colors: [
+                                        color.AppColors
+                                            .secondPageContainerGradient1stColor,
+                                        color.AppColors
+                                            .secondPageContainerGradient2ndColor
+                                      ],
+                                      begin: Alignment.bottomLeft,
+                                      end: Alignment.topRight)),
+                              child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.handyman_outlined,
+                                      size: 20,
+                                      color:
+                                          color.AppColors.secondPageIconColor,
+                                    ),
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      "Resistent band, kettebell",
+                                      style: TextStyle(
+                                          color: color
+                                              .AppColors.secondPageTitleColor),
+                                    )
+                                  ]),
+                            )
+                          ],
+                        )
+                      ]),
+                )
+              : Container(
+                  // width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.only(right: 30, left: 30),
+                        height: 100,
+                        child: Row(
+                          children: [
+                            InkWell(
+                              onTap: () => Get.back(),
+                              child: Icon(
+                                Icons.arrow_back_ios,
+                                size: 20,
+                                color: color.AppColors.secondPageIconColor,
+                              ),
+                            ),
+                            Expanded(child: Container()),
+                            Icon(
+                              Icons.info_outline,
+                              size: 20,
+                              color: color.AppColors.secondPageIconColor,
+                            ),
+                          ],
+                        ),
+                      ),
+                      _playView(context),
+                    ],
+                  ),
+                ),
           Expanded(
             child: Container(
               padding: const EdgeInsets.only(top: 25, left: 25, right: 25),
@@ -213,13 +256,39 @@ class _VideoInfoState extends State<VideoInfo> {
     );
   }
 
+  Widget _playView(BuildContext context) {
+    final controller = _controller;
+    if (controller.value.isInitialized) {
+      return (SizedBox(
+        child: VideoPlayer(controller),
+      ));
+    } else {
+      return const Text("Being initialized pls wait.");
+    }
+  }
+
+  _onTapVideo(int index) {
+    final controller = VideoPlayerController.network(videos[index]["videoUrl"]);
+    _controller = controller;
+    setState(() {});
+    controller.initialize().then((_) {
+      controller.play();
+      setState(() {});
+    });
+  }
+
   _listView() {
     return ListView.builder(
       itemCount: videos.length,
       itemBuilder: (_, int i) {
         return GestureDetector(
             onTap: () {
-              debugPrint("$i");
+              _onTapVideo(i);
+              setState(() {
+                if (_playArea == false) {
+                  _playArea = true;
+                }
+              });
             },
             child: _buildCard(i));
       },
