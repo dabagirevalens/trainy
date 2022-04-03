@@ -17,10 +17,14 @@ class VideoInfo extends StatefulWidget {
 class _VideoInfoState extends State<VideoInfo> {
   List videos = [];
 
-  _initData() {
-    DefaultAssetBundle.of(context)
+  _initData() async {
+    await DefaultAssetBundle.of(context)
         .loadString("json/videoinfo.json")
-        .then((value) => videos = json.decode(value));
+        .then((value) {
+      setState(() {
+        videos = json.decode(value);
+      });
+    });
   }
 
   @override
@@ -170,12 +174,15 @@ class _VideoInfoState extends State<VideoInfo> {
               child: Column(children: [
                 Row(
                   children: [
-                    Text(
-                      "Circuit 1: Toning legs",
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: color.AppColors.circuitsColor),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5),
+                      child: Text(
+                        "Circuit 1: Toning legs",
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: color.AppColors.circuitsColor),
+                      ),
                     ),
                     Expanded(child: Container()),
                     Row(
@@ -196,11 +203,114 @@ class _VideoInfoState extends State<VideoInfo> {
                       ],
                     )
                   ],
-                )
+                ),
+                Expanded(child: _listView())
               ]),
             ),
           )
         ]),
+      ),
+    );
+  }
+
+  _listView() {
+    return ListView.builder(
+      itemCount: videos.length,
+      itemBuilder: (_, int i) {
+        return GestureDetector(
+            onTap: () {
+              debugPrint("$i");
+            },
+            child: _buildCard(i));
+      },
+    );
+  }
+
+  _buildCard(int i) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+      height: 135,
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Container(
+                width: 80,
+                height: 80,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    image: DecorationImage(
+                        image: AssetImage(videos[i]["thumbnail"]),
+                        fit: BoxFit.fill)),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      videos[i]["title"],
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(),
+                      child: Text(
+                        videos[i]["time"],
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    )
+                  ])
+            ],
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Row(
+            children: [
+              Container(
+                  width: 80,
+                  height: 24,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: const Color(0XFFeaeefc),
+                  ),
+                  child: const Center(
+                      child: Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      "15s rest",
+                      style: TextStyle(color: Color(0XFF839fed)),
+                    ),
+                  ))),
+              Row(
+                children: [
+                  for (int i = 0; i <= 75; i++)
+                    i.isEven
+                        ? Container(
+                            height: 2,
+                            width: 4,
+                            decoration: BoxDecoration(
+                                color: const Color(0XFF839fed),
+                                borderRadius: BorderRadius.circular(10)),
+                          )
+                        : const SizedBox(
+                            height: 2,
+                            width: 4,
+                          ),
+                ],
+              )
+            ],
+          ),
+        ],
       ),
     );
   }
