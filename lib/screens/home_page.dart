@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:training/screens/video_info.dart';
 
 import 'package:training/utils/colors.dart' as color;
 
@@ -90,10 +92,13 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(
                   width: 6,
                 ),
-                Icon(
-                  Icons.arrow_forward,
-                  size: 25,
-                  color: color.AppColors.homePageIcons,
+                InkWell(
+                  onTap: () => Get.to(() => const VideoInfo()),
+                  child: Icon(
+                    Icons.arrow_forward,
+                    size: 25,
+                    color: color.AppColors.homePageIcons,
+                  ),
                 ),
               ],
             ),
